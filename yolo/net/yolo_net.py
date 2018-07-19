@@ -4,7 +4,6 @@ from __future__ import print_function
 
 import tensorflow as tf
 import numpy as np
-import re
 
 from yolo.net.net import Net 
 
@@ -16,7 +15,7 @@ class YoloNet(Net):
     net_params   : a params dict
     """
     super(YoloNet, self).__init__(common_params, net_params)
-    #process params
+    # process params
     self.image_size = int(common_params['image_size'])
     self.num_classes = int(common_params['num_classes'])
     self.cell_size = int(net_params['cell_size'])

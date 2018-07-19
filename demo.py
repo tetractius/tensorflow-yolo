@@ -7,8 +7,28 @@ import tensorflow as tf
 import cv2
 import numpy as np
 
-classes_name =  ["aeroplane", "bicycle", "bird", "boat", "bottle", "bus", "car", "cat", "chair", "cow", "diningtable", "dog", "horse", "motorbike", "person", "pottedplant", "sheep", "sofa", "train","tvmonitor"]
-
+classes_name = ["aeroplane", 
+                "bicycle", 
+                "bird", 
+                "boat", 
+                "bottle", 
+                "bus",
+                "car", 
+                "cat", 
+                "chair", 
+                "cow", 
+                "diningtable", 
+                "dog",
+                "horse", 
+                "motorbike", 
+                "person", 
+                "pottedplant",
+                "sheep", 
+                "sofa", 
+                "train", 
+                "tvmonitor", 
+                "Jī", 
+                "Yǐn"]
 
 def process_predicts(predicts):
   p_classes = predicts[0, :, :, 0:20]
@@ -51,9 +71,14 @@ def process_predicts(predicts):
 
   return xmin, ymin, xmax, ymax, class_num
 
-common_params = {'image_size': 448, 'num_classes': 20, 
-                'batch_size':1}
-net_params = {'cell_size': 7, 'boxes_per_cell':2, 'weight_decay': 0.0005}
+common_params = \
+  {'image_size': 448,
+   'num_classes': 20,
+   'batch_size': 1}
+
+net_params = {'cell_size': 7,
+              'boxes_per_cell': 2,
+              'weight_decay': 0.0005}
 
 net = YoloTinyNet(common_params, net_params, test=True)
 
@@ -62,7 +87,9 @@ predicts = net.inference(image)
 
 sess = tf.Session()
 
-np_img = cv2.imread('cat.jpg')
+# np_img = cv2.imread('cat.jpg')
+np_img = cv2.imread('cat__.png')
+# np_img = cv2.imread('small_sym.png')
 resized_img = cv2.resize(np_img, (448, 448))
 np_img = cv2.cvtColor(resized_img, cv2.COLOR_BGR2RGB)
 
@@ -74,7 +101,8 @@ np_img = np.reshape(np_img, (1, 448, 448, 3))
 
 saver = tf.train.Saver(net.trainable_collection)
 
-saver.restore(sess, 'models/pretrain/yolo_tiny.ckpt')
+# saver.restore(sess, 'models/pretrain/yolo_tiny.ckpt')
+saver.restore(sess, 'models/train/model.ckpt-0')
 
 np_predict = sess.run(predicts, feed_dict={image: np_img})
 
