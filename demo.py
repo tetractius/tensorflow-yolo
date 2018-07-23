@@ -31,11 +31,11 @@ classes_name = ["aeroplane",
                 "Yǐn"]
 
 def process_predicts(predicts):
-  p_classes = predicts[0, :, :, 0:20]
-  C = predicts[0, :, :, 20:22]
-  coordinate = predicts[0, :, :, 22:]
+  p_classes = predicts[0, :, :, 0:22]
+  C = predicts[0, :, :, 22:24]
+  coordinate = predicts[0, :, :, 24:]
 
-  p_classes = np.reshape(p_classes, (7, 7, 1, 20))
+  p_classes = np.reshape(p_classes, (7, 7, 1, 22))
   C = np.reshape(C, (7, 7, 2, 1))
 
   P = C * p_classes
@@ -73,7 +73,7 @@ def process_predicts(predicts):
 
 common_params = \
   {'image_size': 448,
-   'num_classes': 20,
+   'num_classes': 22,
    'batch_size': 1}
 
 net_params = {'cell_size': 7,
@@ -102,7 +102,7 @@ np_img = np.reshape(np_img, (1, 448, 448, 3))
 saver = tf.train.Saver(net.trainable_collection)
 
 # saver.restore(sess, 'models/pretrain/yolo_tiny.ckpt')
-saver.restore(sess, 'models/train/model.ckpt-0')
+saver.restore(sess, 'models/train/model.ckpt-10000')
 
 np_predict = sess.run(predicts, feed_dict={image: np_img})
 
